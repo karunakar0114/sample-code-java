@@ -1,0 +1,35 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- master
+
+pool:
+  vmImage: ubuntu-latest
+
+pool:
+  vmImage: ubuntu-latest
+steps:
+  - task: CopyFiles@2
+    displayName: 'Copy Files'
+    inputs:
+      TargetFolder: '$(build.artifactstagingdirectory)'
+  - task: PublishBuildArtifacts@1
+    inputs:
+      pathToPublish: '$(Build.ArtifactStagingDirectory)'
+      artifactName: 'Github_Resources'
+  - task: Bash@3
+    name: Acquia_Github_Connection
+    displayName: Acquia Github Connection
+    inputs:
+      targetType: 'inline'
+      script: |
+        git clone --branch  unused-module-removal-EC-774  essentials@svn-23450.prod.hosting.acquia.com:essentials.git
+        git checkout -b feature/test
+        
+  - task: ArchiveFiles@2
+    displayName: 'Archive $(Build.SourcesDirectory)'
+    inputs:
+      rootFolderOrFile: '$(Build.SourcesDirectory)'
