@@ -21,3 +21,6 @@ steps:
       git add .
       git commit -m "adding new file"
       git push -u origin new1
+      git checkout master
+      git merge new1
+      git push origin master
